@@ -9,11 +9,16 @@ export default function QuoteGenerator() {
     setLoading(true);
     setError('');
     setQuote(null);
+
     try {
       const res = await fetch('/api/quote');
       const j = await res.json();
-      if (!res.ok) setError(j.error || 'Failed to fetch quote');
-      else setQuote(j);
+
+      if (!res.ok) {
+        setError(j.error || 'Failed to fetch quote');
+      } else {
+        setQuote(j);
+      }
     } catch (err) {
       setError('Network error');
     } finally {
@@ -22,14 +27,22 @@ export default function QuoteGenerator() {
   }
 
   return (
-    <div>
-      <button onClick={getQuote} style={{ padding: '8px 12px', marginBottom: 12 }}>Get Quote</button>
-      {isLoading && <div>Loading...</div>}
-      {error && <div style={{ color: 'crimson' }}>{error}</div>}
+    <div className="quote-module">
+      <div className="quote-controls">
+        <button className="quote-btn" onClick={getQuote}>
+          Get Quote
+        </button>
+      </div>
+
+      {isLoading && <div className="loading">Loading...</div>}
+
+      {error && <div className="quote-error">{error}</div>}
+
       {quote && (
-        <blockquote style={{ fontStyle: 'italic', marginTop: 12 }}>
-          “{quote.quote}” — <strong>{quote.author}</strong>
-        </blockquote>
+        <div className="quote-card">
+          <p className="quote-text">“{quote.quote}”</p>
+          <p className="quote-author">— {quote.author}</p>
+        </div>
       )}
     </div>
   );

@@ -1,35 +1,82 @@
-import React, { useState } from 'react';
-import WeatherModule from './components/WeatherModule';
-import CurrencyConverter from './components/CurrencyConverter';
-import QuoteGenerator from './components/QuoteGenerator';
+// src/App.jsx
+import React, { useState, useEffect, lazy, Suspense } from 'react';
+import './index.css';
+
+// Lazy load modules
+const WeatherModule = lazy(() => import('./components/WeatherModule'));
+const CurrencyConverter = lazy(() => import('./components/CurrencyConverter'));
+const QuoteGenerator = lazy(() => import('./components/QuoteGenerator'));
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('Weather');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+
+  // 🌓 Apply theme and add fade transition when it changes
+  useEffect(() => {
+    const root = document.documentElement;
+
+    // Add temporary fade effect class
+    root.classList.add('theme-fade');
+    const t = setTimeout(() => root.classList.remove('theme-fade'), 400);
+
+    // Apply theme mode
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+
+    // Store preference
+    localStorage.setItem('theme', theme);
+
+    return () => clearTimeout(t);
+  }, [theme]);
 
   return (
-    <div style={{ maxWidth: 700, margin: '24px auto', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-      <h1>InfoHub App</h1>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        {['Weather', 'Currency', 'Quote'].map(tab => (
+    <div className="app-container">
+      {/* Header Section */}
+      <header className="app-header">
+        <h1 className="app-title">InfoHub App</h1>
+
+        {/* Theme Switcher Button */}
+        <div className="theme-switcher">
+          <button
+            className="theme-toggle"
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          >
+            {theme === 'light' ? (
+              <>
+                🌞 <span>Light Mode</span>
+              </>
+            ) : (
+              <>
+                🌙 <span>Dark Mode</span>
+              </>
+            )}
+          </button>
+        </div>
+      </header>
+
+      {/* Navigation Tabs */}
+      <div className="tabs">
+        {['Weather', 'Currency', 'Quote'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            style={{
-              padding: '8px 12px',
-              borderRadius: 8,
-              border: activeTab === tab ? '2px solid #333' : '1px solid #ddd',
-              background: activeTab === tab ? '#f0f0f0' : '#fff'
-            }}
+            className={`tab-button ${activeTab === tab ? 'active' : ''}`}
           >
             {tab}
           </button>
         ))}
       </div>
 
-      <div style={{ padding: 16, border: '1px solid #eee', borderRadius: 8 }}>
-        {activeTab === 'Weather' && <WeatherModule />}
-        {activeTab === 'Currency' && <CurrencyConverter />}
-        {activeTab === 'Quote' && <QuoteGenerator />}
+      {/* Dynamic Content */}
+      <div className="content">
+        <Suspense fallback={<div className="loading">Loading...</div>}>
+          {activeTab === 'Weather' && <WeatherModule />}
+          {activeTab === 'Currency' && <CurrencyConverter />}
+          {activeTab === 'Quote' && <QuoteGenerator />}
+        </Suspense>
       </div>
     </div>
   );

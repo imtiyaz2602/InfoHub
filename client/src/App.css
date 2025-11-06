@@ -1,42 +1,87 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+
+
+/* General layout */
+.app-container {
+  max-width: 700px;
+  margin: 24px auto;
+  padding: 16px;
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.app-title {
+  font-size: 1.8rem;
   text-align: center;
+  margin-bottom: 20px;
+  color: #222;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Tabs */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 16px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.tab-button {
+  padding: 10px 18px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.tab-button:hover {
+  background-color: #f0f0f0;
+}
+
+.tab-button.active {
+  border: 2px solid #333;
+  background-color: #e8f0fe;
+}
+
+/* Content container */
+.content {
+  padding: 20px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background-color: #fff;
+  min-height: 200px;
+}
+
+/* Loading placeholder */
+.loading {
+  text-align: center;
+  color: #555;
+  font-size: 0.9rem;
+  padding: 40px 0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .app-container {
+    margin: 16px;
+    padding: 12px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .app-title {
+    font-size: 1.5rem;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .tab-button {
+    flex: 1 1 100%;
+    text-align: center;
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .content {
+    padding: 16px;
+  }
 }

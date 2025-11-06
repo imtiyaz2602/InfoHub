@@ -1,4 +1,3 @@
-// server/server.js
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
@@ -137,10 +136,6 @@ app.get('/api/currency', async (req, res) => {
 
 });
 
-/** Optional: Serve built client from server/public (uncomment when you build the client) */
-// const expressStaticPath = path.join(__dirname, 'public');
-// app.use(express.static(expressStaticPath));
-// app.get('*', (req, res) => res.sendFile(path.join(expressStaticPath, 'index.html')));
 
 /** Start server */
 app.listen(PORT, () => {

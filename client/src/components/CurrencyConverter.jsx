@@ -10,9 +10,11 @@ export default function CurrencyConverter() {
     setLoading(true);
     setError('');
     setData(null);
+
     try {
       const res = await fetch(`/api/currency?amount=${encodeURIComponent(amount)}`);
       const j = await res.json();
+
       if (!res.ok) setError(j.error || 'Failed to fetch rates');
       else setData(j);
     } catch (err) {
@@ -23,26 +25,33 @@ export default function CurrencyConverter() {
   }
 
   return (
-    <div>
-      <div style={{ marginBottom: 12 }}>
+    <div className="converter">
+      <h3 className="weather-title">Currency Converter</h3>
+
+      <div className="converter-form">
         <input
           type="number"
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
-          style={{ padding: 8, width: 160, marginRight: 8 }}
+          className="converter-input"
+          placeholder="Amount (INR)"
         />
-        <button onClick={convert} style={{ padding: '8px 12px' }}>Convert (INR →)</button>
+
+        <button className="converter-btn" onClick={convert}>
+          Convert (INR →)
+        </button>
       </div>
 
-      {isLoading && <div>Loading...</div>}
-      {error && <div style={{ color: 'crimson' }}>{error}</div>}
+      {isLoading && <div className="loading">Loading...</div>}
+      {error && <div className="converter-error">{error}</div>}
 
       {data && (
-        <div>
+        <div className="converter-result">
           <div>USD: <strong>{data.usd}</strong></div>
           <div>EUR: <strong>{data.eur}</strong></div>
-          <div style={{ marginTop: 8, color: '#666', fontSize: 13 }}>
-            Rates: USD={data.rateUsd} EUR={data.rateEur} {data.note ? `(${data.note})` : ''}
+          <div className="converter-note">
+            Rates: USD={data.rateUsd} EUR={data.rateEur}{' '}
+            {data.note ? `(${data.note})` : ''}
           </div>
         </div>
       )}

@@ -1,68 +1,398 @@
+/* === Global color variables (light theme default) === */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --bg-color: #f4f7fb;
+  --text-color: #172033;
+  --card-bg: #ffffff;
+  --border-color: #e6eef8;
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --accent-bg: #f0f6ff;
+  --shadow-color: rgba(8, 24, 48, 0.06);
+  --error-color: #dc2626;
+  --muted: rgba(23, 32, 51, 0.6);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* === Dark theme override === */
+html.dark {
+  --bg-color: #0b1220;
+  --text-color: #e6eef8;
+  --card-bg: #111827;
+  --border-color: #2b3948;
+  --primary-color: #60a5fa;
+  --primary-hover: #93c5fd;
+  --accent-bg: #14243a;
+  --shadow-color: rgba(255, 255, 255, 0.05);
+  --error-color: #f87171;
+  --muted: rgba(230, 238, 248, 0.75);
 }
 
+/* === Smooth Theme Transition === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+html.theme-fade {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* === Base Styles === */
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  padding: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+#root {
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* === App Container === */
+.app-container {
+  width: 100%;
+  max-width: 760px;
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px var(--shadow-color);
+  padding: 28px;
+  border: 1px solid var(--border-color);
 }
 
-button {
+/* === Header === */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.app-title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* === Theme Switcher === */
+.theme-switcher {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle {
+  padding: 8px 14px;
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  border: 1px solid var(--border-color);
+  background: var(--accent-bg);
+  color: var(--text-color);
+  font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px var(--shadow-color);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.theme-toggle:hover {
+  background: var(--primary-color);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* === Tabs === */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--card-bg);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.tab-button:hover {
+  background-color: var(--accent-bg);
+}
+
+.tab-button.active {
+  background-color: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+/* === Content Area === */
+.content {
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: var(--card-bg);
+  min-height: 220px;
+}
+
+.loading {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* === WEATHER MODULE ===*/
+.weather-module {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.weather-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.weather-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* === Weather Input (fixed text color issue) === */
+.weather-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.weather-input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.weather-input::placeholder {
+  color: var(--text-color);
+  opacity: 0.6;
+}
+
+html.dark .weather-input {
+  background-color: #1e293b;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+html.dark .weather-input::placeholder {
+  color: #cbd5e1;
+  opacity: 0.8;
+}
+
+.weather-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-hover);
+  outline: none;
+}
+
+.weather-btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.weather-btn:hover {
+  background: var(--primary-hover);
+}
+
+.weather-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: linear-gradient(180deg, var(--card-bg), #fbfdff);
+  box-shadow: 0 4px 14px var(--shadow-color);
+}
+
+html.dark .weather-card {
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+}
+
+.weather-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 10px;
+  background: var(--accent-bg);
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+}
+
+.weather-temp {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.weather-desc {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.weather-meta {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.weather-error {
+  color: var(--error-color);
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+/* === CURRENCY CONVERTER === */
+.converter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.converter-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.converter-input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
+  flex: 1;
+}
+
+.converter-btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.converter-btn:hover {
+  background: var(--primary-hover);
+}
+
+.converter-result {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--accent-bg);
+  font-weight: 700;
+}
+
+/* === QUOTE GENERATOR === */
+.quote-module {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quote-controls {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.quote-btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #7c3aed;
+  color: #fff;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.quote-btn:hover {
+  background: #5b21b6;
+}
+
+.quote-card {
+  padding: 16px;
+  border-radius: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 14px var(--shadow-color);
+}
+
+.quote-text {
+  font-size: 1.05rem;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.quote-author {
+  margin-top: 8px;
+  text-align: right;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+/* === Responsive Design === */
+@media (max-width: 600px) {
+  .app-container {
+    padding: 18px;
   }
-  a:hover {
-    color: #747bff;
+
+  .app-title {
+    font-size: 1.5rem;
   }
-  button {
-    background-color: #f9f9f9;
+
+  .tab-button {
+    flex: 1 1 100%;
+  }
+
+  .converter-form {
+    flex-direction: column;
+  }
+
+  .quote-btn {
+    width: 100%;
+  }
+
+  .weather-card {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
